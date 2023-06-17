@@ -1,8 +1,16 @@
-wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg \
-    | gpg --dearmor \
-    | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+steps:
+## Shinkwrap
+- name: 'gcr.io/$PROJECT_ID/faas-cli:0.8.8'
+  args: ['faas-cli', 'template', 'store', 'pull', 'node8-express']
+- name: 'gcr.io/$PROJECT_ID/faas-cli:0.8.8'
+  args: ['faas-cli', 'build', '--shrinkwrap']
+## Build Docker image
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/$PROJECT_ID/timezone-shift:$REVISION_ID', '-t', 'gcr.io/$PROJECT_ID/timezone-shift:latest', '-f' ,'./build/timezone-shift/Dockerfile', './build/timezone-shift/']
 
-echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://download.vscodium.com/debs vscodium main' \
-    | sudo tee /etc/apt/sources.list.d/vscodium.list
+## Deploy to "Cloud Run"
+#- name: 'gcr.io/cloud-builders/gcloud'
+#  args: ['beta', 'run', 'deploy', 'timezone-shift', '--image', 'gcr.io/$PROJECT_ID/timezone-shift:$REVISION_ID', '--region', 'us-central-1']
 
-sudo apt update && sudo apt install codium
+images: 
+- 'gcr.io/$PROJECT_ID/timezone-shift'
