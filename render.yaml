@@ -1,4 +1,4 @@
-steps:
+
 ## Shinkwrap
 - name: 'gcr.io/faas-cli:0.8.8'
   args: ['faas-cli', 'template', 'store', 'pull', 'node8-express']
@@ -13,4 +13,4 @@ steps:
 #  args: ['beta', 'run', 'deploy', 'timezone-shift', '--image', 'gcr.io/$PROJECT_ID/timezone-shift:$REVISION_ID', '--region', 'us-central-1']
 
 images: 
-- 'gcr.io/timezone-shift'
+- 'gcr.io/faas-cli:0.8.8'
