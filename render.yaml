@@ -1,5 +1,4 @@
 
-## Shinkwrap
 - name: 'gcr.io/faas-cli:0.8.8'
   args: ['faas-cli', 'template', 'store', 'pull', 'node8-express']
 - name: 'gcr.io/faas-cli:0.8.8'
